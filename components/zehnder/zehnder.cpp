@@ -476,6 +476,7 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
       break;
 
     default:
+      // Received frame from unknown device in unknown state; type 0x0D from ID 0xFC type 0x0F
       ESP_LOGD(TAG, "Received frame from unknown device in unknown state; type 0x%02X from ID 0x%02X type 0x%02X",
                pResponse->command, pResponse->tx_id, pResponse->tx_type);
       break;
@@ -540,6 +541,8 @@ void ZehnderRF::setSpeed(const uint8_t paramSpeed, const uint8_t paramTimer) {
   }
 
   ESP_LOGD(TAG, "Set speed: 0x%02X; Timer %u minutes", speed, timer);
+  ESP_LOGD(TAG, "current_state %u ",this->state_);
+
 
   if (this->state_ == StateIdle) {
     (void) memset(this->_txFrame, 0, FAN_FRAMESIZE);  // Clear frame data
