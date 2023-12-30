@@ -234,6 +234,10 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
                    pResponse->tx_type == FAN_TYPE_MAIN_UNIT ? "Main" : "?", pResponse->tx_id,
                    pResponse->payload.networkJoinOpen.networkId);
 
+          ESP_LOGD(TAG, "Discovery1: Found unit type 0x%02X (%s) with ID 0x%02X on network 0x%08X", pResponse->tx_type,
+                   pResponse->tx_type == FAN_TYPE_MAIN_WALL_UNIT ? "Main" : "?", pResponse->tx_id,
+                   pResponse->payload.networkJoinOpen.networkId);
+
           this->rfComplete();
 
           (void) memset(this->_txFrame, 0, FAN_FRAMESIZE);  // Clear frame data

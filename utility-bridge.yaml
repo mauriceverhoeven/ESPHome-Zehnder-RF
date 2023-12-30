@@ -78,7 +78,7 @@ button:
 # https://esphome.io/components/external_components.html#external-components-git
 external_components:
   - source: github://Sanderhuisman/ESPHome-Zehnder-RF
-
+    refresh: 0s
 # SPI
 spi:
   clk_pin: GPIO14
