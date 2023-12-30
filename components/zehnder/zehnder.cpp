@@ -230,13 +230,20 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
       ESP_LOGD(TAG, "DiscoverStateWaitForLinkRequest");
       switch (pResponse->command) {
         case FAN_NETWORK_JOIN_OPEN:  // Received linking request from main unit
-          ESP_LOGD(TAG, "Discovery: Found unit type 0x%02X (%s) with ID 0x%02X on network 0x%08X", pResponse->tx_type,
+          ESP_LOGD(TAG, "Discovery1: Found unit type 0x%02X (%s) with ID 0x%02X on network 0x%08X", pResponse->tx_type,
                    pResponse->tx_type == FAN_TYPE_MAIN_UNIT ? "Main" : "?", pResponse->tx_id,
                    pResponse->payload.networkJoinOpen.networkId);
 
           this->rfComplete();
 
           (void) memset(this->_txFrame, 0, FAN_FRAMESIZE);  // Clear frame data
+
+          ESP_LOGCONFIG(TAG, "  Fan networkId      0x%08X", this->config_.fan_networkId);
+          ESP_LOGCONFIG(TAG, "  Fan my device type 0x%02X", this->config_.fan_my_device_type);
+          ESP_LOGCONFIG(TAG, "  Fan my device id   0x%02X", this->config_.fan_my_device_id);
+          ESP_LOGCONFIG(TAG, "  Fan main_unit type 0x%02X", this->config_.fan_main_unit_type);
+          ESP_LOGCONFIG(TAG, "  Fan main unit id   0x%02X", this->config_.fan_main_unit_id);
+
 
           // Found a main unit, so send a join request
           pTxFrame->rx_type = FAN_TYPE_MAIN_UNIT;  // Set type to main unit
