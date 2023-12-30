@@ -335,8 +335,19 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
 
     case StateDiscoveryJoinComplete:
       ESP_LOGD(TAG, "StateDiscoveryJoinComplete");
+
       switch (pResponse->command) {
         case FAN_TYPE_QUERY_NETWORK:
+          ESP_LOGCONFIG(TAG, "  Fan main_unit type 0x%02X", this->config_.fan_main_unit_type);
+          ESP_LOGCONFIG(TAG, "  Fan main unit id   0x%02X", this->config_.fan_main_unit_id);
+          ESP_LOGCONFIG(TAG, "  pResponse->rx_type  0x%02X", pResponse->rx_type);
+          ESP_LOGCONFIG(TAG, "  pResponse->rx_id  0x%02X", pResponse->rx_id);
+          ESP_LOGCONFIG(TAG, "  pResponse->tx_type  0x%02X", pResponse->tx_type);
+          ESP_LOGCONFIG(TAG, "  pResponse->tx_id  0x%02X", pResponse->tx_id);
+
+
+
+
           if ((pResponse->rx_type == this->config_.fan_main_unit_type) &&
               (pResponse->rx_id == this->config_.fan_main_unit_id) &&
               (pResponse->tx_type == this->config_.fan_main_unit_type) &&
