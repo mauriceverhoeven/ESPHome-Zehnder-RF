@@ -238,6 +238,8 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
                    pResponse->tx_type == FAN_TYPE_MAIN_WALL_UNIT ? "Main" : "?", pResponse->tx_id,
                    pResponse->payload.networkJoinOpen.networkId);
 
+
+
           this->rfComplete();
 
           (void) memset(this->_txFrame, 0, FAN_FRAMESIZE);  // Clear frame data
@@ -250,7 +252,8 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
 
 
           // Found a main unit, so send a join request
-          pTxFrame->rx_type = FAN_TYPE_MAIN_UNIT;  // Set type to main unit
+          // pTxFrame->rx_type = FAN_TYPE_MAIN_UNIT;  // Set type to main unit
+          pTxFrame->rx_type = pResponse->tx_type;  // Set type to main unit
           pTxFrame->rx_id = pResponse->tx_id;      // Set ID to the ID of the main unit
           pTxFrame->tx_type = this->config_.fan_my_device_type;
           pTxFrame->tx_id = this->config_.fan_my_device_id;
