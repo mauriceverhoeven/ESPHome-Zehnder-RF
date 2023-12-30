@@ -337,15 +337,27 @@ void ZehnderRF::rfHandleReceived(const uint8_t *const pData, const uint8_t dataL
       ESP_LOGD(TAG, "StateDiscoveryJoinComplete");
 
       switch (pResponse->command) {
+        case FAN_FRAME_0B:
+          ESP_LOGD(TAG, "ignoring all the checks.. assume it's ok");
+          this->rfComplete();
+
+          ESP_LOGD(TAG, "Saving pairing config");
+          this->pref_.save(&this->config_);
+
+          this->state_ = StateIdle;
+          break;
         case FAN_TYPE_QUERY_NETWORK:
-          ESP_LOGCONFIG(TAG, "  Fan main_unit type 0x%02X", this->config_.fan_main_unit_type);
-          ESP_LOGCONFIG(TAG, "  Fan main unit id   0x%02X", this->config_.fan_main_unit_id);
-          ESP_LOGCONFIG(TAG, "  pResponse->rx_type  0x%02X", pResponse->rx_type);
-          ESP_LOGCONFIG(TAG, "  pResponse->rx_id  0x%02X", pResponse->rx_id);
-          ESP_LOGCONFIG(TAG, "  pResponse->tx_type  0x%02X", pResponse->tx_type);
-          ESP_LOGCONFIG(TAG, "  pResponse->tx_id  0x%02X", pResponse->tx_id);
-
-
+        // 12:58:51][C][zehnder:375]:   Fan main_unit type 0x0E
+        // [12:58:51][C][zehnder:376]:   Fan main unit id   0xF9
+        // [12:58:51][C][zehnder:377]:   pResponse->rx_type  0x01
+        // [12:58:51][C][zehnder:378]:   pResponse->rx_id  0xF9
+        // [12:58:51][C][zehnder:379]:   pResponse->tx_type  0x03
+        // [12:58:51][C][zehnder:380]:   pResponse->tx_id  0xF6
+        // pResponse->rx_type == this->config_.fan_main_unit_type  0x01 == 0x0E
+        // pResponse->rx_id == this->config_.fan_main_unit_id 0xF9 == 0xF9
+        // pResponse->tx_type == this->config_.fan_main_unit_type 0x03 == 0x0E
+        // pResponse->tx_id == this->config_.fan_main_unit_id  0xF6 == 0xF9
+              
           ESP_LOGCONFIG(TAG, "  Fan main_unit type 0x%02X", this->config_.fan_main_unit_type);
           ESP_LOGCONFIG(TAG, "  Fan main unit id   0x%02X", this->config_.fan_main_unit_id);
           ESP_LOGCONFIG(TAG, "  pResponse->rx_type  0x%02X", pResponse->rx_type);
