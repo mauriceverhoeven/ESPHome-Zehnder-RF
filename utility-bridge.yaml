@@ -77,8 +77,11 @@ button:
 # Load external components
 # https://esphome.io/components/external_components.html#external-components-git
 external_components:
-  - source: github://Sanderhuisman/ESPHome-Zehnder-RF
+  - source: github://mauriceverhoeven/ESPHome-Zehnder-RF
     refresh: 0s
+    ref: main
+    components: [nrf905, zehnder]
+
 # SPI
 spi:
   clk_pin: GPIO14
@@ -88,7 +91,8 @@ spi:
 # nRF905 config
 nrf905:
   id: "nrf905_rf"
-  cs_pin: GPIO23
+  # cs_pin: GPIO23
+  cs_pin: GPIO15
   cd_pin: GPIO33
   ce_pin: GPIO27
   pwr_pin: GPIO26
